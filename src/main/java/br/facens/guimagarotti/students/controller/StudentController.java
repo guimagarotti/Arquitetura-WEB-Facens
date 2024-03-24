@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.RestController;
 import br.facens.guimagarotti.students.model.Student;
 import br.facens.guimagarotti.students.service.StudentService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;

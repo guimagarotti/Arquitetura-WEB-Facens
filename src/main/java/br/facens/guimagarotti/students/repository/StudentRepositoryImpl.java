@@ -15,8 +15,8 @@ public class StudentRepositoryImpl implements StudentRepository {
     public StudentRepositoryImpl() {
         // Adiciona algumas tarefas pré-cadastradas
         students.add(new Student(1L, "Guilherme", "Rodrigues", "Carlos Miguel, 35", "45714459083", "Futebol"));
-        students.add(new Student(1L, "Lívia", "Alves", "Carlos Antônio, 457", "55689098312", "Ballet"));
-        students.add(new Student(1L, "Gabriel", "Pereira", "Jonas Antonieta, 123", "33145672133", "Filme"));
+        students.add(new Student(2L, "Lívia", "Alves", "Carlos Antônio, 457", "55689098312", "Ballet"));
+        students.add(new Student(3L, "Gabriel", "Pereira", "Jonas Antonieta, 123", "33145672133", "Filme"));
         nextId = 4L; // Atualiza o próximo ID
     }
 
