@@ -1,6 +1,13 @@
 package br.facens.guimagarotti.students.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "student")
 public class Student {
+    @Id
     private Long id;
     private String name;
     private String lastName;
@@ -15,6 +22,10 @@ public class Student {
         this.address = address;
         this.cpf = cpf;
         this.hobby = hobby;
+    }
+
+    public Student() {
+        
     }
 
     public Long getId() {
