@@ -1,47 +1,58 @@
 package br.facens.guimagarotti.students.repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import br.facens.guimagarotti.students.model.Student;
 
 @Repository
 public class StudentRepositoryImpl implements StudentRepository {
-    private final List<Student> students = new ArrayList<>();
-    private Long nextId = 1L;
+    private final JdbcTemplate jdbcTemplate;
 
-    public StudentRepositoryImpl() {
-        // Adiciona algumas tarefas pré-cadastradas
-        students.add(new Student(1L, "Guilherme", "Rodrigues", "Carlos Miguel, 35", "45714459083", "Futebol"));
-        students.add(new Student(1L, "Lívia", "Alves", "Carlos Antônio, 457", "55689098312", "Ballet"));
-        students.add(new Student(1L, "Gabriel", "Pereira", "Jonas Antonieta, 123", "33145672133", "Filme"));
-        nextId = 4L; // Atualiza o próximo ID
+    public StudentRepositoryImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
-    @Override
     public List<Student> findAll() {
-        return students;
+        return jdbcTemplate.query("SELECT * FROM student", (resultSet, rowNum) -> {
+            System.out.println("Numero da linha: " + rowNum);
+            return new Student(
+                    resultSet.getLong("id"),
+                    resultSet.getString("name"),
+                    resultSet.getString("lastName"),
+                    resultSet.getString("address"),
+                    resultSet.getString("cpf"),
+                    resultSet.getString("hobby"));
+        });
     }
 
-    @Override
+    @SuppressWarnings("deprecation")
     public Student findById(Long id) {
-        return students.stream()
-                .filter(task -> task.getId().equals(id))
-                .findFirst()
-                .orElse(null);
+        String query = "SELECT * FROM student WHERE id = ?;";
+
+        return jdbcTemplate.queryForObject(query, new Object[] { id }, (resultSet, rowNum) -> new Student(
+                resultSet.getLong("id"),
+                resultSet.getString("name"),
+                resultSet.getString("lastName"),
+                resultSet.getString("address"),
+                resultSet.getString("cpf"),
+                resultSet.getString("hobby")));
     }
 
-    @Override
     public Student save(Student student) {
-        if (student.getId() == null) {
-            student.setId(nextId++);
-            students.add(student);
+        if (student.getId() != null) {
+            String insertQuery = "INSERT INTO public.student (id, name, lastName, address, cpf, hobby) VALUES (?, ?, ?, ?, ?, ?)";
+
+            jdbcTemplate.update(insertQuery, student.getId(), student.getName(), student.getLastName(),
+                    student.getAddress(), student.getCpf(), student.getHobby());
         } else {
-            students.removeIf(t -> t.getId().equals(student.getId()));
-            students.add(student);
+            String updateQuery = "UPDATE public.student SET name = ?, lastName = ?, address = ?, cpf = ?, hobby = ? WHERE id = ?";
+            jdbcTemplate.update(updateQuery, student.getName(), student.getLastName(), student.getAddress(),
+                    student.getCpf(), student.getHobby());
         }
+
         return student;
     }
 }
