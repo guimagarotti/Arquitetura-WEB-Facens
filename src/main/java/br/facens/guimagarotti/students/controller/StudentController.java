@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/api/students")
@@ -30,6 +31,11 @@ public class StudentController {
     @GetMapping("/{id}")
     public Student getStudentById(@PathVariable Long id) {
         return studentService.getStudentById(id);
+    }
+
+    @GetMapping("/findByName")
+    public Student getStudentByName(@RequestParam String name) {
+        return studentService.getStudentByName(name);
     }
 
     @PostMapping("/add")

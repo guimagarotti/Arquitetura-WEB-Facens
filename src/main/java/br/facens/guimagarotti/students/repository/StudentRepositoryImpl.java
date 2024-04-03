@@ -41,6 +41,19 @@ public class StudentRepositoryImpl implements StudentRepository {
                 resultSet.getString("hobby")));
     }
 
+    @SuppressWarnings("deprecation")
+    public Student findByName(String name) {
+        String query = "SELECT * FROM student WHERE name = ?;";
+
+        return jdbcTemplate.queryForObject(query, new Object[] { name }, (resultSet, rowNum) -> new Student(
+                resultSet.getLong("id"),
+                resultSet.getString("name"),
+                resultSet.getString("lastName"),
+                resultSet.getString("address"),
+                resultSet.getString("cpf"),
+                resultSet.getString("hobby")));
+    }
+
     public Student save(Student student) {
         if (student.getId() != null) {
             String insertQuery = "INSERT INTO public.student (id, name, lastName, address, cpf, hobby) VALUES (?, ?, ?, ?, ?, ?)";

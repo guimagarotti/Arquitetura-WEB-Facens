@@ -7,5 +7,6 @@ import br.facens.guimagarotti.students.model.Student;
 public interface StudentRepository {
     List<Student> findAll();
     Student findById(Long id);
+    Student findByName(String name);
     Student save(Student student);
 }
