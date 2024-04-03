@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/api/students")
 public class StudentController {
     private List<String> students = new ArrayList<>();
-    
+
     public StudentController() {
         students.add("Aluno 1 - Guilherme");
         students.add("Aluno 2 - Jonas");
@@ -27,7 +27,7 @@ public class StudentController {
         return students;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{student}")
     public String getStudentById(@PathVariable int student) {
         if (student >= 0 && student < students.size()) {
             return students.get(student);
