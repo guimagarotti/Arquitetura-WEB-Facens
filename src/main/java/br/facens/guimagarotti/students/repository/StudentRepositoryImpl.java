@@ -54,6 +54,25 @@ public class StudentRepositoryImpl implements StudentRepository {
                 resultSet.getString("hobby")));
     }
 
+    @SuppressWarnings("deprecation")
+    public Student deleteById(Long id) {
+        String querySelect = "SELECT * FROM student WHERE id = ?";
+        String queryDelete = "DELETE FROM student WHERE id = ?";
+
+        Student student = jdbcTemplate.queryForObject(querySelect, new Object[] { id },
+                (resultSet, rowNum) -> new Student(
+                        resultSet.getLong("id"),
+                        resultSet.getString("name"),
+                        resultSet.getString("lastName"),
+                        resultSet.getString("address"),
+                        resultSet.getString("cpf"),
+                        resultSet.getString("hobby")));
+
+        jdbcTemplate.update(queryDelete, id);
+
+        return student;
+    }
+
     public Student save(Student student) {
         if (student.getId() != null) {
             String insertQuery = "INSERT INTO public.student (id, name, lastName, address, cpf, hobby) VALUES (?, ?, ?, ?, ?, ?)";

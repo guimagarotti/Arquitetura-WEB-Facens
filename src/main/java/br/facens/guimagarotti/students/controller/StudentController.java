@@ -7,6 +7,7 @@ import br.facens.guimagarotti.students.service.StudentService;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,6 +37,11 @@ public class StudentController {
     @GetMapping("/findByName")
     public Student getStudentByName(@RequestParam String name) {
         return studentService.getStudentByName(name);
+    }
+
+    @DeleteMapping("/{id}")
+    public Student removeStudentById(@PathVariable Long id) {
+        return studentService.removeStudentById(id);
     }
 
     @PostMapping("/add")

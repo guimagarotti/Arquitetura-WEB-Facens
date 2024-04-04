@@ -8,5 +8,6 @@ public interface StudentRepository {
     List<Student> findAll();
     Student findById(Long id);
     Student findByName(String name);
+    Student deleteById(Long id);
     Student save(Student student);
 }

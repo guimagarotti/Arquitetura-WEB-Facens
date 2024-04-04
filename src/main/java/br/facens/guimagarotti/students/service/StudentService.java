@@ -8,5 +8,6 @@ public interface StudentService {
     List<Student> getAllStudents();
     Student getStudentById(Long id);
     Student getStudentByName(String name);
+    Student removeStudentById(Long id);
     Student createStudent(Student student); 
 }
