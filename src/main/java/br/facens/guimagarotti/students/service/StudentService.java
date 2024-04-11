@@ -8,5 +8,5 @@ public interface StudentService {
     List<Student> getAllStudents();
     Student getStudentById(Long id);
     Student createStudent(Student student); 
-    String removeStudent(int id);
+    void removeStudent(Long id);
 }

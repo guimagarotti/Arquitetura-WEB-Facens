@@ -4,34 +4,40 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import br.facens.guimagarotti.students.exceptions.StudentNotFoundException;
 import br.facens.guimagarotti.students.model.Student;
 import br.facens.guimagarotti.students.repository.StudentRepository;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class StudentServiceImpl implements StudentService {
     private final StudentRepository studentRepository;
-
-    public StudentServiceImpl(StudentRepository studentRepository) {
-        this.studentRepository = studentRepository;
-    }
 
     @Override
     public List<Student> getAllStudents() {
         return studentRepository.findAll();
     }
 
+    @SuppressWarnings("null")
     @Override
     public Student getStudentById(Long id) {
-        return studentRepository.findById(id);
+        return studentRepository.findById(id).orElse(null);
     }
 
+    @SuppressWarnings("null")
     @Override
     public Student createStudent(Student student) {
         return studentRepository.save(student);
     }
 
+    @SuppressWarnings("null")
     @Override
-    public String removeStudent(int id) {
-        return studentRepository.delete(id);
+    public void removeStudent(Long id) {
+        Student student = getStudentById(id);
+        if (student == null)
+            throw new StudentNotFoundException("O Aluno com ID: " + id + " não foi encontrado.");
+
+        studentRepository.deleteById(id);
     }
 }

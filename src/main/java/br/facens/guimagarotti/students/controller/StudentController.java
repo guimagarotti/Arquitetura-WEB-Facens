@@ -2,11 +2,14 @@ package br.facens.guimagarotti.students.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import br.facens.guimagarotti.students.exceptions.StudentNotFoundException;
 import br.facens.guimagarotti.students.model.Student;
 import br.facens.guimagarotti.students.service.StudentService;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,7 +42,12 @@ public class StudentController {
     }
 
     @DeleteMapping("/remove/{id}")
-    public String removeStudent(@PathVariable int id) {
-        return studentService.removeStudent(id);
+    public ResponseEntity<String> removeStudent(@PathVariable Long id) {
+        try {
+            studentService.removeStudent(id);
+            return ResponseEntity.ok("Item deletado com sucesso!");
+        } catch (StudentNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 }
