@@ -19,19 +19,16 @@ public class StudentServiceImpl implements StudentService {
         return studentRepository.findAll();
     }
 
-    @SuppressWarnings("null")
     @Override
     public Student getStudentById(Long id) {
         return studentRepository.findById(id).orElse(null);
     }
 
-    @SuppressWarnings("null")
     @Override
     public Student createStudent(Student student) {
         return studentRepository.save(student);
     }
 
-    @SuppressWarnings("null")
     @Override
     public void removeStudent(Long id) {
         Student student = getStudentById(id);
@@ -39,5 +36,30 @@ public class StudentServiceImpl implements StudentService {
             throw new StudentNotFoundException("O Aluno com ID: " + id + " não foi encontrado.");
 
         studentRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Student> getStudentsByCourseId(Long courseId) {
+        return studentRepository.findByCourseId(courseId);
+    }
+
+    @Override
+    public List<Student> getStudentsByCourseName(String courseName) {
+        return studentRepository.findByCourseName(courseName);
+    }
+
+    @Override
+    public List<Student> getStudentsByCourseNameContaining(String parcialName) {
+        return studentRepository.findByCourseNameContaining(parcialName);
+    }
+
+    @Override
+    public Long countStudentsByCourseId(Long courseId) {
+        return studentRepository.countStudentsByCourseId(courseId);
+    }
+
+    @Override
+    public Long countStudentsByPartialCourseName(String partialName) {
+        return studentRepository.countStudentsByParcialCourseName(partialName);
     }
 }

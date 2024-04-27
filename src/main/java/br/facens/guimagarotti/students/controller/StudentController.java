@@ -50,4 +50,29 @@ public class StudentController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
+
+    @GetMapping("/byCourseId/{id}")
+    public List<Student> getStudentsByCourseId(@PathVariable Long id) {
+        return studentService.getStudentsByCourseId(id);
+    }
+
+    @GetMapping("/byCourseName/{name}")
+    public List<Student> getStudentsByCourseName(@PathVariable String name) {
+        return studentService.getStudentsByCourseName(name);
+    }
+
+    @GetMapping("/byCourseNameContaining/{partialName}")
+    public List<Student> getStudentsByCourseNameContaining(@PathVariable String partialName) {
+        return studentService.getStudentsByCourseNameContaining(partialName);
+    }
+
+    @GetMapping("/countByCourseId/{courseId}")
+    public Long countStudentsByCourseId(@PathVariable Long courseId) {
+        return studentService.countStudentsByCourseId(courseId);
+    }
+
+    @GetMapping("/countByPartialCourseName/{partialName}")
+    public Long countStudentsByPartialCourseName(@PathVariable String partialName) {
+        return studentService.countStudentsByPartialCourseName(partialName);
+    }
 }
