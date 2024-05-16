@@ -5,11 +5,15 @@ import org.springframework.web.bind.annotation.RestController;
 import br.facens.guimagarotti.students.exceptions.StudentNotFoundException;
 import br.facens.guimagarotti.students.model.Student;
 import br.facens.guimagarotti.students.service.StudentService;
+import jakarta.validation.Valid;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,8 +41,15 @@ public class StudentController {
     }
 
     @PostMapping("/add")
-    public Student createStudent(@RequestBody Student student) {
-        return studentService.createStudent(student);
+    public ResponseEntity<?> createStudent(@Valid @RequestBody Student student, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errors = new HashMap<>();
+            bindingResult.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
+            return ResponseEntity.badRequest().body(errors);
+        }
+
+        Student createdStudent = studentService.createStudent(student);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdStudent);
     }
 
     @DeleteMapping("/remove/{id}")
